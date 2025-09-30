@@ -1,18 +1,19 @@
 import asyncio
-import cli_ui
-import httpx
 import json
 import os
 import re
 import sys
-
 from datetime import datetime, timedelta
+
+import cli_ui
+import httpx
+
 from src.cleanup import cleanup, reset_terminal
 from src.console import console
-
 from src.trackers.ACM import ACM
 from src.trackers.AITHER import AITHER
 from src.trackers.AL import AL
+from src.trackers.ANMT import ANMT
 from src.trackers.ANT import ANT
 from src.trackers.AR import AR
 from src.trackers.ASC import ASC
@@ -784,7 +785,7 @@ class TRACKER_SETUP:
 
 
 tracker_class_map = {
-    'ACM': ACM, 'AITHER': AITHER, 'AL': AL, 'ANT': ANT, 'AR': AR, 'ASC': ASC, 'AZ': AZ, 'BHD': BHD, 'BHDTV': BHDTV, 'BJS': BJS, 'BLU': BLU, 'BT': BT, 'CBR': CBR,
+    'ACM': ACM, 'AITHER': AITHER, 'AL': AL, 'ANMT':ANMT, 'ANT': ANT, 'AR': AR, 'ASC': ASC, 'AZ': AZ, 'BHD': BHD, 'BHDTV': BHDTV, 'BJS': BJS, 'BLU': BLU, 'BT': BT, 'CBR': CBR,
     'CZ': CZ, 'DC': DC, 'DP': DP, 'FNP': FNP, 'FF': FF, 'FL': FL, 'FRIKI': FRIKI, 'GPW': GPW, 'HDB': HDB, 'HDS': HDS, 'HDT': HDT, 'HHD': HHD, 'HUNO': HUNO, 'ITT': ITT,
     'LCD': LCD, 'LDU': LDU, 'LST': LST, 'LT': LT, 'MTV': MTV, 'NBL': NBL, 'OE': OE, 'OTW': OTW, 'PHD': PHD, 'PT': PT, 'PTP': PTP, 'PTER': PTER, 'PTS': PTS, 'PTT': PTT,
     'R4E': R4E, 'RAS': RAS, 'RF': RF, 'RTF': RTF, 'SAM': SAM, 'SHRI': SHRI, 'SN': SN, 'SP': SP, 'SPD': SPD, 'STC': STC, 'THR': THR,
@@ -801,5 +802,5 @@ other_api_trackers = {
 }
 
 http_trackers = {
-    'AR', 'ASC', 'AZ', 'BJS', 'BT', 'CZ', 'FF', 'FL', 'HDB', 'HDS', 'HDT', 'MTV', 'PHD', 'PTER', 'PTS', 'TTG'
+    'ANMT', 'AR', 'ASC', 'AZ', 'BJS', 'BT', 'CZ', 'FF', 'FL', 'HDB', 'HDS', 'HDT', 'MTV', 'PHD', 'PTER', 'PTS', 'TTG'
 }
