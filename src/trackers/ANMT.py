@@ -91,7 +91,7 @@ class ANMT(COMMON):
         dupes = []
         anmt_type = await self.get_anmt_type(meta["type"])
         anmt_resolution = await self.get_anmt_resolution(meta["resolution"])
-        search_title = f"{meta["imdb_info"]["title"]}"
+        search_title = f'{meta["imdb_info"]["title"]}'
         console.print(f"[yellow]Searching for: {search_title}[/yellow]")
         params = {"total": "1", "cat": "0", "searchin": "filedisc", "search": search_title, "page": "1"}
         await self.load_cookies(meta)
@@ -473,7 +473,7 @@ class ANMT(COMMON):
         return {"base_title": mal_data["title"]}
 
     async def get_year(self, mal_data: dict) -> str:
-        return {"year": f"({mal_data["year"]})"}
+        return {"year": f'({mal_data["year"]})'}
 
     async def get_episode(self, meta: dict) -> str:
         value = ""
@@ -566,8 +566,8 @@ class ANMT(COMMON):
         description_parts.append(f"[*][b]Producers: [/b] {producers}")
         genres = await self.get_genres(meta, mal_data)
         description_parts.append(f"[*][b]Genres: [/b] {genres}")
-        description_parts.append(f"[*][b]Duration: [/b] {mal_data["duration"]}")
-        description_parts.append(f"[*][b]Rating: [/b] {mal_data["rating"]}")
+        description_parts.append(f'[*][b]Duration: [/b] {mal_data["duration"]}')
+        description_parts.append(f'[*][b]Rating: [/b] {mal_data["rating"]}"')
         description_parts.append("[/list]")
 
         # Synopsis
