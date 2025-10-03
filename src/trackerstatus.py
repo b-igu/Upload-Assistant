@@ -50,6 +50,9 @@ async def process_all_trackers(meta):
                 login = await tracker_class.validate_credentials(meta)
                 if not login:
                     local_tracker_status['skipped'] = True
+                if isinstance(login, str) and login:
+                    local_meta[f'{tracker_name}_secret_token'] = login
+                    meta[f'{tracker_name}_secret_token'] = login
             if tracker_name in {"THR", "PTP"}:
                 if local_meta.get('imdb_id', 0) == 0:
                     while True:
@@ -88,7 +91,7 @@ async def process_all_trackers(meta):
 
             if local_meta['tracker_status'][tracker_name].get('skip_upload'):
                 local_tracker_status['skipped'] = True
-            elif 'skipped' not in local_meta or local_meta['skipped'] is None:
+            elif 'skipped' not in local_meta and local_tracker_status['skipped'] is None:
                 local_tracker_status['skipped'] = False
 
             if not local_tracker_status['banned'] and not local_tracker_status['skipped']:

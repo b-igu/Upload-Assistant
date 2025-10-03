@@ -397,9 +397,16 @@ class Prep():
             if meta.get('imdb_id', 0) != 0:
                 meta['skip_trackers'] = True
 
+        if meta['debug']:
+            pathed_time_start = time.time()
+
         # auto torrent searching with qbittorrent that grabs torrent ids for metadata searching
         if not any(meta.get(id_type) for id_type in hash_ids + tracker_ids) and not meta.get('skip_trackers', False) and not meta.get('edit', False):
             await client.get_pathed_torrents(meta['path'], meta)
+
+        if meta['debug']:
+            pathed_time_end = time.time()
+            console.print(f"Pathed torrent data processed in {pathed_time_end - pathed_time_start:.2f} seconds")
 
         # Ensure all manual IDs have proper default values
         meta['tmdb_manual'] = meta.get('tmdb_manual') or 0
@@ -604,8 +611,8 @@ class Prep():
 
         # Run a check against mediainfo to see if it has tmdb/imdb
         if (meta.get('tmdb_id') == 0 or meta.get('imdb_id') == 0) and not meta.get('emby', False):
-            meta['category'], meta['tmdb_id'], meta['imdb_id'] = await get_tmdb_imdb_from_mediainfo(
-                mi, meta['category'], meta['is_disc'], meta['tmdb_id'], meta['imdb_id']
+            meta['category'], meta['tmdb_id'], meta['imdb_id'], meta['tvdb_id'] = await get_tmdb_imdb_from_mediainfo(
+                mi, meta['category'], meta['is_disc'], meta['tmdb_id'], meta['imdb_id'], meta['tvdb_id']
             )
 
         # Flag for emby if no IDs were found
@@ -847,11 +854,11 @@ class Prep():
         meta['bluray_score'] = int(float(self.config['DEFAULT'].get('bluray_score', 100)))
         meta['bluray_single_score'] = int(float(self.config['DEFAULT'].get('bluray_single_score', 100)))
         meta['use_bluray_images'] = self.config['DEFAULT'].get('use_bluray_images', False)
-        if meta.get('is_disc') == "BDMV" and get_bluray_info and (meta.get('distributor') is None or meta.get('region') is None) and meta.get('imdb_id') != 0 and not meta.get('emby', False):
+        if meta.get('is_disc') in ("BDMV", "DVD") and get_bluray_info and (meta.get('distributor') is None or meta.get('region') is None) and meta.get('imdb_id') != 0 and not meta.get('emby', False):
             await get_bluray_releases(meta)
 
-            # and if we getting bluray images, we'll rehost them
-            if meta.get('is_disc') == "BDMV" and meta.get('use_bluray_images', False):
+            # and if we getting bluray/dvd images, we'll rehost them
+            if meta.get('is_disc') in ("BDMV", "DVD") and meta.get('use_bluray_images', False):
                 from src.rehostimages import check_hosts
                 url_host_mapping = {
                     "ibb.co": "imgbb",
